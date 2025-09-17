@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -6,7 +7,7 @@ public class movement : MonoBehaviour
 
     //globals
     readonly float MaxSpeed = 10.0f;
-    readonly float Acceleration = 20.0f; 
+    readonly float Acceleration = 20.0f;
     readonly float AirFriction = 20.0f;
     readonly float GroundFriction = 30.0f;
 
@@ -15,6 +16,7 @@ public class movement : MonoBehaviour
 
     InputAction moveAction;
     InputAction jumpAction;
+    Vector3 startPos;
 
     private void Start()
     {
@@ -29,28 +31,26 @@ public class movement : MonoBehaviour
         // and the "Jump" action state, which is a boolean value
 
         Vector2 moveValue = moveAction.ReadValue<Vector2>();
-        Debug.Log(moveValue);
+        bool isGrounded = player.GetComponent<CapsuleCollider2D>().IsTouchingLayers(LayerMask.GetMask("Ground"));
 
         if (moveValue != Vector2.zero)
         {
             velocity = new Vector2(moveValue.x * MaxSpeed, player.GetComponent<Rigidbody2D>().linearVelocity.y);
             player.GetComponent<Rigidbody2D>().linearVelocity = Vector2.Lerp(player.GetComponent<Rigidbody2D>().linearVelocity, velocity, Acceleration * Time.deltaTime);
-        }
-        else
+        } else
         {
             // Apply friction when no input is given
-            float friction = player.GetComponent<Rigidbody2D>().IsTouchingLayers(3) ? GroundFriction : AirFriction;
+            float friction = isGrounded ? GroundFriction : AirFriction;
             player.GetComponent<Rigidbody2D>().linearVelocity = Vector2.Lerp(player.GetComponent<Rigidbody2D>().linearVelocity, new Vector2(0, player.GetComponent<Rigidbody2D>().linearVelocity.y), friction * Time.deltaTime);
         }
 
 
-        
-
         if (jumpAction.IsPressed())
         {
-            if (player.GetComponent<Rigidbody2D>().IsTouchingLayers(3))
+            if (isGrounded)
             {
-                player.GetComponent<Rigidbody2D>().AddForce(new Vector2(0, 300));
+                startPos = player.transform.position;
+
             }
         }
     }
