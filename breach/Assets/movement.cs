@@ -1,22 +1,57 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class movement : MonoBehaviour
 {
-    //globals
-    public float MaxSpeed = 5.0f;
-    public float Acceleration = 10.0f; 
-    public float AirFriction = 0.1f;
-    public float GroundFriction = 0.5f;
 
+    //globals
+    readonly float MaxSpeed = 10.0f;
+    readonly float Acceleration = 20.0f; 
+    readonly float AirFriction = 20.0f;
+    readonly float GroundFriction = 30.0f;
+
+    public GameObject player;
+    Vector2 velocity;
+
+    InputAction moveAction;
+    InputAction jumpAction;
+
+    private void Start()
+    {
+        // 3. Find the references to the "Move" and "Jump" actions
+        moveAction = InputSystem.actions.FindAction("Move");
+        jumpAction = InputSystem.actions.FindAction("Jump");
+    }
 
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Space))
+        // 4. Read the "Move" action value, which is a 2D vector
+        // and the "Jump" action state, which is a boolean value
+
+        Vector2 moveValue = moveAction.ReadValue<Vector2>();
+        Debug.Log(moveValue);
+
+        if (moveValue != Vector2.zero)
         {
-            Debug.Log("Space key was pressed.");
+            velocity = new Vector2(moveValue.x * MaxSpeed, player.GetComponent<Rigidbody2D>().linearVelocity.y);
+            player.GetComponent<Rigidbody2D>().linearVelocity = Vector2.Lerp(player.GetComponent<Rigidbody2D>().linearVelocity, velocity, Acceleration * Time.deltaTime);
+        }
+        else
+        {
+            // Apply friction when no input is given
+            float friction = player.GetComponent<Rigidbody2D>().IsTouchingLayers(3) ? GroundFriction : AirFriction;
+            player.GetComponent<Rigidbody2D>().linearVelocity = Vector2.Lerp(player.GetComponent<Rigidbody2D>().linearVelocity, new Vector2(0, player.GetComponent<Rigidbody2D>().linearVelocity.y), friction * Time.deltaTime);
         }
 
-        // float horizontalInput = Input.GetAxis("Horizontal");
-        // float verticalInput = Input.GetAxis("Vertical");
+
+        
+
+        if (jumpAction.IsPressed())
+        {
+            if (player.GetComponent<Rigidbody2D>().IsTouchingLayers(3))
+            {
+                player.GetComponent<Rigidbody2D>().AddForce(new Vector2(0, 300));
+            }
+        }
     }
 }
