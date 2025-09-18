@@ -7,15 +7,15 @@ public class PlayerController : MonoBehaviour
     [Header("Horizontal Movement")]
     private Rigidbody2D rb;
     [SerializeField] private float maxSpeed = 15f;
-    [SerializeField] private float acceleration = 70f;
-    [SerializeField] private float friction = 70f;
-    [SerializeField] private float jumpForce = 30f;
+    [SerializeField] private float acceleration = 60f;
+    [SerializeField] private float friction = 60f;
+    [SerializeField] private float jumpForce = 25f;
     private float xAxis;
     [SerializeField] private Transform groundCheck;
-    [SerializeField] private float groundCheckY = 0.2f;
+    [SerializeField] private float groundCheckY = 0.3f;
     [SerializeField] private float groundCheckX = 0.5f;
     [SerializeField] private LayerMask groundLayer;
-    [SerializeField] private float boost = 140f;
+    [SerializeField] private float boost = 20f;
 
 
     private InputAction moveAction;
@@ -41,7 +41,7 @@ public class PlayerController : MonoBehaviour
 
     void GetInput()
     {
-        xAxis = moveAction.ReadValue<Vector2>().x;
+        xAxis = 1 * Math.Sign(moveAction.ReadValue<Vector2>().x);
     }
 
     void Move()
@@ -62,11 +62,13 @@ public class PlayerController : MonoBehaviour
     {
         if (!jumpAction.IsPressed() && rb.linearVelocity.y > 0)
         {
-            rb.linearVelocity = new Vector3(rb.linearVelocity.x, rb.linearVelocity.y * 0.5f, 0);
+            rb.linearVelocity = new Vector3(rb.linearVelocity.x, rb.linearVelocity.y * 0.67f, 0);
         }
 
         if (jumpAction.triggered && IsGrounded())
         {
+
+
             float boostToAdd = 0;
             if(xAxis != 0)
             {
