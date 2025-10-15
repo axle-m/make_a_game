@@ -3,11 +3,13 @@ using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using System.Collections;
 using UnityEngine.Timeline;
 public class PlayerController : MonoBehaviour
 {
     [Header("Horizontal Movement")]
     private Rigidbody2D rb;
+    private Vector3 _respawnPoint;
     [SerializeField] private float maxSpeed = 15f;
     private float currentMaxSpeed;
     [SerializeField] private float acceleration = 60f;
@@ -20,7 +22,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float groundCheckX = 0.5f;
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private float boost = 20f;
-
+    [SerializeField] private bool _active = true;
     
 
     private PlayerStateList playerStateList;
@@ -43,6 +45,7 @@ public class PlayerController : MonoBehaviour
     private int coyoteFrameCounter = 0;
     [SerializeField] private bool allowDoubleJump = true;
     private bool canDoubleJump = true;
+    private Collider2D _collider;
 
     void Start()
     {
@@ -52,6 +55,7 @@ public class PlayerController : MonoBehaviour
         moveAction = InputSystem.actions.FindAction("Move");
         jumpAction = InputSystem.actions.FindAction("Jump");
         dashAction = InputSystem.actions.FindAction("Dash");
+        _collider = GetComponent<Collider2D>();
 
         moveAction.Enable();
         jumpAction.Enable();
@@ -65,6 +69,10 @@ public class PlayerController : MonoBehaviour
         Move();
         Jump();
         StartDash();
+        if (!_active)
+        {
+            return;
+        }
     }
 
     void GetInput()
@@ -161,7 +169,7 @@ public class PlayerController : MonoBehaviour
     void applyJumpForces()
     {
         float boostToAdd = 0;
-        if (xAxis != 0)
+        if  (xAxis != 0)
         {
             boostToAdd = Math.Sign(xAxis) * boost;
         }
@@ -190,5 +198,19 @@ public class PlayerController : MonoBehaviour
         playerStateList.Dashing = false;
         yield return new WaitForSeconds(dashCooldownMS / 1000);
         canDash = true;
+    }
+    public IEnumerator die()
+    {
+        _active = false;
+        _collider.enabled = false;
+        yield return new WaitForSeconds(0.75f);
+        transform.position = _respawnPoint;
+        _active = true;
+        _collider.enabled = true;
+    }
+
+    public void SetRespawnPoint(Vector3 newPoint)
+    {
+        _respawnPoint = newPoint;
     }
 }
