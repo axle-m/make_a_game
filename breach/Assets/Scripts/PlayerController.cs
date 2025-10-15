@@ -2,10 +2,12 @@ using System;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using System.Collections;
 public class PlayerController : MonoBehaviour
 {
     [Header("Horizontal Movement")]
     private Rigidbody2D rb;
+    private Vector3 _respawnPoint;
     [SerializeField] private float maxSpeed = 15f;
     [SerializeField] private float acceleration = 60f;
     [SerializeField] private float friction = 60f;
@@ -16,10 +18,11 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float groundCheckX = 0.5f;
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private float boost = 20f;
-
+    [SerializeField] private bool _active = true;
 
     private InputAction moveAction;
     private InputAction jumpAction;
+    private Collider2D _collider;
 
     void Start()
     {
@@ -27,6 +30,7 @@ public class PlayerController : MonoBehaviour
 
         moveAction = InputSystem.actions.FindAction("Move");
         jumpAction = InputSystem.actions.FindAction("Jump");
+        _collider = GetComponent<Collider2D>();
 
         moveAction.Enable();
         jumpAction.Enable();
@@ -37,6 +41,10 @@ public class PlayerController : MonoBehaviour
         GetInput();
         Move();
         Jump();
+        if (!_active)
+        {
+            return;
+        }
     }
 
     void GetInput()
@@ -70,12 +78,26 @@ public class PlayerController : MonoBehaviour
 
 
             float boostToAdd = 0;
-            if(xAxis != 0)
+            if (xAxis != 0)
             {
                 boostToAdd = Math.Sign(xAxis) * boost;
             }
 
             rb.linearVelocity = new Vector3(rb.linearVelocity.x + boostToAdd, jumpForce, 0);
         }
+    }
+    public IEnumerator die()
+    {
+        _active = false;
+        _collider.enabled = false;
+        yield return new WaitForSeconds(0.75f);
+        transform.position = _respawnPoint;
+        _active = true;
+        _collider.enabled = true;
+    }
+
+    public void SetRespawnPoint(Vector3 newPoint)
+    {
+        _respawnPoint = newPoint;
     }
 }
