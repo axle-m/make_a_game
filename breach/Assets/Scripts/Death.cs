@@ -2,12 +2,12 @@ using UnityEngine;
 
 public class Death : MonoBehaviour
 {
-    private void OnCollisionEnter2D(Collision2D other)
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        var player = other.collider.GetComponent<PlayerController>();
+        var player = other.GetComponent<PlayerController>();
         if (player != null)
         {
-            StartCoroutine(player.die());
+            player.Die();
         }
 
     }
