@@ -17,6 +17,7 @@ public class PlayerController : MonoBehaviour
     private float currentFriction;
     [SerializeField] private float jumpForce = 25f;
     private float xAxis;
+    private float yAxis;
     [SerializeField] private Transform groundCheck;
     [SerializeField] private float groundCheckY = 0.3f;
     [SerializeField] private float groundCheckX = 0.5f;
@@ -31,13 +32,20 @@ public class PlayerController : MonoBehaviour
     private InputAction moveAction;
     private InputAction jumpAction;
     private InputAction dashAction;
+    private InputAction sprintAction;
     [SerializeField] private float dashTimeMS = 200f;
     [SerializeField] private float dashSpeed = 50f;
     [SerializeField] private float dashCooldownMS = 200f;
     private bool canDash = true;
     [SerializeField] private int maxDashes = 1;
     private int dashes;
-    [SerializeField] private float jumpDashFriction;
+    [SerializeField] private float sprintJumpFriction;
+    [SerializeField] private float sprintTimeMS = 300f;
+    [SerializeField] private float sprintSpeed = 50f;
+    [SerializeField] private float sprintCooldownMS = 200f;
+
+    private bool canSprint = true;
+    private int sprints = 1;
 
     [SerializeField] private int jumpFrameTolerance = 8;
     private int jumpFrameCounter = 0;
@@ -45,6 +53,8 @@ public class PlayerController : MonoBehaviour
     private int coyoteFrameCounter = 0;
     [SerializeField] private bool allowDoubleJump = true;
     private bool canDoubleJump = true;
+    [SerializeField] private float maxFallSpeed = 40f;
+    private float currentMaxFallSpeed;
     private Collider2D _collider;
 
     void Start()
@@ -55,11 +65,15 @@ public class PlayerController : MonoBehaviour
         moveAction = InputSystem.actions.FindAction("Move");
         jumpAction = InputSystem.actions.FindAction("Jump");
         dashAction = InputSystem.actions.FindAction("Dash");
+        sprintAction = InputSystem.actions.FindAction("Sprint");
         _collider = GetComponent<Collider2D>();
 
         moveAction.Enable();
         jumpAction.Enable();
+        sprintAction.Enable();
         dashAction.Enable();
+
+        currentMaxFallSpeed = maxFallSpeed;
     }
 
     void Update()
@@ -67,17 +81,25 @@ public class PlayerController : MonoBehaviour
         GetInput();
         UpdateState();
         Move();
-        Jump();
+        StartSprint();
         StartDash();
+        Jump();
+
         if (!_active)
         {
             return;
         }
     }
 
+    float round(float value)
+    {
+        return Mathf.Round(value * 100f) / 100f;
+    }
+
     void GetInput()
     {
         xAxis = 1 * Math.Sign(moveAction.ReadValue<Vector2>().x);
+        yAxis = 1 * Math.Sign(moveAction.ReadValue<Vector2>().y);
     }
 
     void UpdateState()
@@ -89,52 +111,87 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
+            //if not in contact with ground, decrement jump frame counter
             if (jumpFrameCounter > 0)
                 jumpFrameCounter--;
             else
                 playerStateList.Jumping = false;
         }
 
+        resetGroundedStates();
+        resetSprintState();
+
+        //ensure dash maintains speed while dashing
+        if (playerStateList.Dashing)
+        {
+            currentMaxSpeed = dashSpeed;
+        }
+
+        //reset sprint speed in the air, ensure sprint doesn't get interrupted if not dashing
+        else if (!playerStateList.Sprinting)
+        {
+            currentMaxSpeed = maxSpeed;
+        }
+    }
+
+    void resetGroundedStates()
+    {
         if (IsGrounded())
         {
             coyoteFrameCounter = coyoteFrameTolerance;
-            dashes = maxDashes;
-            canDoubleJump = true;
-            currentFriction = friction;
-            currentMaxSpeed = maxSpeed;
+            resetDashes();
+            resetDoubleJump();
+            if (!playerStateList.Sprinting && !playerStateList.Dashing)
+            {
+                currentFriction = friction;
+                currentMaxSpeed = maxSpeed;
+            }
         }
         else if (coyoteFrameCounter > 0)
         {
             coyoteFrameCounter--;
         }
-
-        if (playerStateList.Dashing)
+    }
+    void resetSprintState()
+    {
+        if (!sprintAction.IsPressed())
         {
-            currentMaxSpeed = dashSpeed;
-            if (jumpAction.IsPressed() && IsGrounded())
-                currentFriction = jumpDashFriction;
+            playerStateList.Sprinting = false;
+            if (IsGrounded()) canSprint = true;
+            sprints = 1;
         }
-        else
-        {
-            currentMaxSpeed = maxSpeed;
-        }
+    }
+    void resetDoubleJump()
+    {
+        canDoubleJump = true;
+    }
+    void resetDashes()
+    {
+        dashes = maxDashes;
     }
 
     void Move()
     {
+        if (Mathf.Abs(rb.linearVelocity.x) < 0.5f)
+            rb.linearVelocity = new Vector2(round(Mathf.Lerp(rb.linearVelocity.x, 0, currentFriction / 4 /*smoother deceleration*/ * Time.deltaTime)), rb.linearVelocity.y);
         if (Mathf.Abs(rb.linearVelocity.x) > currentMaxSpeed || xAxis == 0)
+        {
             decelerate();
-        else rb.linearVelocity = new Vector2(rb.linearVelocity.x + acceleration * xAxis * Time.deltaTime, rb.linearVelocity.y);
-        if (rb.linearVelocity.x < 0.5f && rb.linearVelocity.x > -0.5f)
-            rb.linearVelocity = new Vector2(Mathf.Lerp(rb.linearVelocity.x, 0, currentFriction * Time.deltaTime), rb.linearVelocity.y);
+        }
+        else
+        {
+            rb.linearVelocityX = round(rb.linearVelocity.x + acceleration * xAxis * Time.deltaTime);
+        }
+        rb.linearVelocityY = round(Mathf.Clamp(rb.linearVelocity.y, -maxFallSpeed, maxFallSpeed));
+        
     }
 
     void decelerate()
     {
         if (rb.linearVelocity.x > 0)
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x - (currentFriction + Mathf.Pow(currentFriction, (rb.linearVelocity.x - 15) / 55f)) * Time.deltaTime, rb.linearVelocity.y);
+            rb.linearVelocity = new Vector2(round(rb.linearVelocity.x - (currentFriction + Mathf.Pow(currentFriction, (rb.linearVelocity.x - 15) / 55f)) * Time.deltaTime), rb.linearVelocity.y);
         else if (rb.linearVelocity.x < 0)
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x + (currentFriction + Mathf.Pow(currentFriction, (-rb.linearVelocity.x - 15) / 55f)) * Time.deltaTime, rb.linearVelocity.y);
+            rb.linearVelocity = new Vector2(round(rb.linearVelocity.x + (currentFriction + Mathf.Pow(currentFriction, (-rb.linearVelocity.x - 15) / 55f)) * Time.deltaTime), rb.linearVelocity.y);
     }
 
     public bool IsGrounded()
@@ -147,6 +204,8 @@ public class PlayerController : MonoBehaviour
 
     void Jump()
     {
+        if (playerStateList.Dashing) return;
+
         if (!jumpAction.IsPressed() && rb.linearVelocity.y > 0)
         {
             playerStateList.Jumping = false;
@@ -176,28 +235,74 @@ public class PlayerController : MonoBehaviour
 
         rb.linearVelocity = new Vector3(rb.linearVelocity.x + boostToAdd, jumpForce, 0);
     }
-    
-    void StartDash()
+
+    public void StartDash()
     {
-        if (canDash && dashAction.triggered && dashes > 0)
+        if (canDash && dashAction.triggered && dashes > 0 && !playerStateList.Sprinting)
         {
             dashes--;
+            rb.linearVelocity = new Vector2(0, 0);
+            bool temp = canDoubleJump;
+            canDoubleJump = false;
             StartCoroutine(Dash());
+            canDoubleJump = temp;
         }
     }
 
-    IEnumerator Dash()
+    public IEnumerator Dash()
     {
         canDash = false;
         playerStateList.Dashing = true;
+        currentMaxSpeed = dashSpeed;
+        currentMaxFallSpeed = dashSpeed;
         float originalGravity = rb.gravityScale;
         rb.gravityScale = 0;
-        rb.linearVelocity = new Vector2(dashSpeed * Math.Sign(xAxis == 0 ? transform.localScale.x : xAxis), 0);
+
+        //direction multipliers
+        float xDir = xAxis;
+        float yDir = yAxis;
+        if( xDir == 0 && yDir == 0)
+        {
+            xDir = Math.Sign(transform.localScale.x);
+        }
+        else if (yDir != 0 && xDir != 0)
+        {
+            yDir *= 0.7f;
+            xDir *= 0.7f;
+        }
+        rb.linearVelocity = new Vector2(dashSpeed * xDir, dashSpeed * yDir);
+
         yield return new WaitForSeconds(dashTimeMS / 1000);
         rb.gravityScale = originalGravity;
+        currentMaxSpeed = maxSpeed;
+        currentMaxFallSpeed = maxFallSpeed;
         playerStateList.Dashing = false;
         yield return new WaitForSeconds(dashCooldownMS / 1000);
         canDash = true;
+    }
+
+    void StartSprint()
+    {
+        if (canSprint && sprintAction.triggered && sprints > 0 && !playerStateList.Dashing)
+        {
+            sprints = 0;
+            StartCoroutine(Sprint());
+        }
+    }
+
+    public IEnumerator Sprint()
+    {
+        canSprint = false;
+        playerStateList.Sprinting = true;
+        float originalGravity = rb.gravityScale;
+        rb.gravityScale = 0;
+        currentMaxSpeed = sprintSpeed;
+        rb.linearVelocity = new Vector2(sprintSpeed * Math.Sign(xAxis == 0 ? transform.localScale.x : xAxis), 0);
+        yield return new WaitForSeconds(sprintTimeMS / 1000);
+        rb.gravityScale = originalGravity;
+        yield return new WaitForSeconds(sprintCooldownMS / 1000);
+        if(!IsGrounded()) playerStateList.Sprinting = false;
+        canSprint = true;
     }
     public IEnumerator die()
     {
