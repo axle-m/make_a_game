@@ -9,7 +9,7 @@ public class PlayerController : MonoBehaviour
 {
     [Header("Horizontal Movement")]
     private Rigidbody2D rb;
-    private Vector3 _respawnPoint;
+    private Vector2 _respawnPoint;
     [SerializeField] private float maxSpeed = 15f;
     private float currentMaxSpeed;
     [SerializeField] private float acceleration = 60f;
@@ -72,12 +72,18 @@ public class PlayerController : MonoBehaviour
         jumpAction.Enable();
         sprintAction.Enable();
         dashAction.Enable();
+        SetRespawnPoint(transform.position);
 
         currentMaxFallSpeed = maxFallSpeed;
     }
 
     void Update()
     {
+        
+        if (!_active)
+        {
+            return;
+        }
         GetInput();
         UpdateState();
         Move();
@@ -304,18 +310,25 @@ public class PlayerController : MonoBehaviour
         if(!IsGrounded()) playerStateList.Sprinting = false;
         canSprint = true;
     }
-    public IEnumerator die()
+    public void Die()
     {
         _active = false;
-        _collider.enabled = false;
-        yield return new WaitForSeconds(0.75f);
-        transform.position = _respawnPoint;
-        _active = true;
-        _collider.enabled = true;
+        rb.linearVelocity = new Vector2(0,0);
+        StartCoroutine(Respawn());
+        
     }
 
-    public void SetRespawnPoint(Vector3 newPoint)
+    public void SetRespawnPoint(Vector2 position)
     {
-        _respawnPoint = newPoint;
+        _respawnPoint = position;
+    }
+
+    private IEnumerator Respawn()
+    {
+        rb.gravityScale = 0;
+        yield return new WaitForSeconds(1f);
+        rb.gravityScale = 7;
+        transform.position = _respawnPoint;
+        _active = true;
     }
 }
