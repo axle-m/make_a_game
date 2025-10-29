@@ -185,7 +185,7 @@ public class PlayerController : MonoBehaviour
     void Move()
     {
         if (Mathf.Abs(rb.linearVelocity.x) < 0.5f)
-            rb.linearVelocity = new Vector2(round(Mathf.Lerp(rb.linearVelocity.x, 0, currentFriction / 4 /*smoother deceleration*/ * Time.deltaTime)), rb.linearVelocity.y);
+            rb.linearVelocity = new Vector2(round(Mathf.Lerp(rb.linearVelocity.x, 0, currentFriction /*/ 4 /*smoother deceleration*/ * Time.deltaTime)), rb.linearVelocity.y);
         if (Mathf.Abs(rb.linearVelocity.x) > currentMaxSpeed || xAxis == 0)
         {
             decelerate();
@@ -201,9 +201,9 @@ public class PlayerController : MonoBehaviour
     void decelerate()
     {
         if (rb.linearVelocity.x > 0)
-            rb.linearVelocity = new Vector2(round(rb.linearVelocity.x - currentFriction * Time.deltaTime), rb.linearVelocity.y);
+            rb.linearVelocity = new Vector2(Mathf.Max(0, round(rb.linearVelocity.x - currentFriction * Time.deltaTime)), rb.linearVelocity.y);
         else if (rb.linearVelocity.x < 0)
-            rb.linearVelocity = new Vector2(round(rb.linearVelocity.x + currentFriction * Time.deltaTime), rb.linearVelocity.y);
+            rb.linearVelocity = new Vector2(Mathf.Min(0, round(rb.linearVelocity.x + currentFriction * Time.deltaTime)), rb.linearVelocity.y);
     }
 
     public bool IsGrounded()
