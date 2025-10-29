@@ -24,6 +24,12 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private float boost = 20f;
     [SerializeField] private bool _active = true;
+
+    [SerializeField] private Transform leftWallCheck;
+    [SerializeField] private Transform rightWallCheck;
+    [SerializeField] private float wallCheckX = 0.2f;
+    [SerializeField] private float wallCheckY = 0.35f;
+    [SerializeField] private LayerMask wallLayer;
     
 
     private PlayerStateList playerStateList;
@@ -54,6 +60,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private bool allowDoubleJump = true;
     private bool canDoubleJump = true;
     [SerializeField] private float maxFallSpeed = 40f;
+    [SerializeField] private float wallDragFallSpeed = 10f;
     private float currentMaxFallSpeed;
     private Collider2D _collider;
 
@@ -179,7 +186,7 @@ public class PlayerController : MonoBehaviour
     void Move()
     {
         if (Mathf.Abs(rb.linearVelocity.x) < 0.5f)
-            rb.linearVelocity = new Vector2(round(Mathf.Lerp(rb.linearVelocity.x, 0, currentFriction / 4 /*smoother deceleration*/ * Time.deltaTime)), rb.linearVelocity.y);
+            rb.linearVelocity = new Vector2(round(Mathf.Lerp(rb.linearVelocity.x, 0, currentFriction /*/ 4 /*smoother deceleration*/ * Time.deltaTime)), rb.linearVelocity.y);
         if (Mathf.Abs(rb.linearVelocity.x) > currentMaxSpeed || xAxis == 0)
         {
             decelerate();
@@ -188,16 +195,26 @@ public class PlayerController : MonoBehaviour
         {
             rb.linearVelocityX = round(rb.linearVelocity.x + acceleration * xAxis * Time.deltaTime);
         }
-        rb.linearVelocityY = round(Mathf.Clamp(rb.linearVelocity.y, -maxFallSpeed, maxFallSpeed));
+        fall();
+    }
+
+    void fall()
+    {   
+        //wall drag
+        if(isTouchingLeftWall() && xAxis < 0 || isTouchingRightWall() && xAxis > 0)
+        {
+            rb.linearVelocityY = round(Mathf.Clamp(rb.linearVelocity.y, -wallDragFallSpeed, maxFallSpeed));
+        }
         
+        rb.linearVelocityY = round(Mathf.Clamp(rb.linearVelocity.y, -maxFallSpeed, maxFallSpeed));
     }
 
     void decelerate()
     {
         if (rb.linearVelocity.x > 0)
-            rb.linearVelocity = new Vector2(round(rb.linearVelocity.x - (currentFriction + Mathf.Pow(currentFriction, (rb.linearVelocity.x - 15) / 55f)) * Time.deltaTime), rb.linearVelocity.y);
+            rb.linearVelocity = new Vector2(Mathf.Max(0, round(rb.linearVelocity.x - currentFriction * Time.deltaTime)), rb.linearVelocity.y);
         else if (rb.linearVelocity.x < 0)
-            rb.linearVelocity = new Vector2(round(rb.linearVelocity.x + (currentFriction + Mathf.Pow(currentFriction, (-rb.linearVelocity.x - 15) / 55f)) * Time.deltaTime), rb.linearVelocity.y);
+            rb.linearVelocity = new Vector2(Mathf.Min(0, round(rb.linearVelocity.x + currentFriction * Time.deltaTime)), rb.linearVelocity.y);
     }
 
     public bool IsGrounded()
@@ -205,6 +222,24 @@ public class PlayerController : MonoBehaviour
         return Physics2D.Raycast(groundCheck.position, Vector2.down, groundCheckY, groundLayer)
             || Physics2D.Raycast(groundCheck.position + new Vector3(-groundCheckX, 0, 0), Vector2.down, groundCheckY, groundLayer)
             || Physics2D.Raycast(groundCheck.position + new Vector3(groundCheckX, 0, 0), Vector2.down, groundCheckY, groundLayer);
+    }
+   
+   //Separate wall checks for left and right to allow for dragging along walls
+    public bool isTouchingLeftWall()
+    {
+        return Physics2D.Raycast(leftWallCheck.position, Vector2.left, wallCheckX, wallLayer)
+            || Physics2D.Raycast(leftWallCheck.position + new Vector3(0, wallCheckY, 0), Vector2.left, wallCheckX, wallLayer)
+            || Physics2D.Raycast(leftWallCheck.position + new Vector3(0, -wallCheckY, 0), Vector2.left, wallCheckX, wallLayer);
+    }
+    public bool isTouchingRightWall()
+    {
+        return Physics2D.Raycast(rightWallCheck.position, Vector2.right, wallCheckX, wallLayer)
+            || Physics2D.Raycast(rightWallCheck.position + new Vector3(0, wallCheckY, 0), Vector2.right, wallCheckX, wallLayer)
+            || Physics2D.Raycast(rightWallCheck.position + new Vector3(0, -wallCheckY, 0), Vector2.right, wallCheckX, wallLayer);
+    }
+    public bool isTouchingWall()
+    {
+        return isTouchingLeftWall() || isTouchingRightWall();
     }
 
 
@@ -223,12 +258,23 @@ public class PlayerController : MonoBehaviour
             playerStateList.Jumping = false;
             applyJumpForces();
         }
+        else if (isTouchingWall() && !IsGrounded() && playerStateList.Jumping)
+        {
+            wallJump();
+        }
         else if (playerStateList.Jumping && allowDoubleJump && canDoubleJump)
         {
             playerStateList.Jumping = false;
             canDoubleJump = false;
             applyJumpForces();
         }
+    }
+
+    void wallJump()
+    {
+        float wallDir = isTouchingLeftWall() ? 1 : -1;
+        rb.linearVelocity = new Vector2(0, 0);
+        rb.linearVelocity = new Vector2(wallDir * boost, jumpForce);
     }
 
     void applyJumpForces()
