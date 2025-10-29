@@ -313,7 +313,7 @@ public class PlayerController : MonoBehaviour
     public void Die()
     {
         _active = false;
-        rb.linearVelocity = new Vector2(0,0);
+        Freeze();
         StartCoroutine(Respawn());
         
     }
@@ -326,9 +326,27 @@ public class PlayerController : MonoBehaviour
     private IEnumerator Respawn()
     {
         rb.gravityScale = 0;
-        yield return new WaitForSeconds(1f);
+        yield return PlayDeathAnimation();
         rb.gravityScale = 7;
+        _collider.enabled = true;
         transform.position = _respawnPoint;
         _active = true;
+    }
+    private void Freeze()
+    {
+        rb.linearVelocity = new Vector2(0, 0);
+    }
+    private void setVelocity(float a, float b)
+    {
+        rb.linearVelocity = new Vector2(a, b);
+    }
+    private IEnumerator PlayDeathAnimation()
+    {
+        _collider.enabled = false;
+        setVelocity(0, 3f);
+        yield return new WaitForSeconds(0.75f);
+        Freeze();
+        yield return new WaitForSeconds(0.5f);
+        yield break;
     }
 }
