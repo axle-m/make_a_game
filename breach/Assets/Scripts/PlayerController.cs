@@ -60,6 +60,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private bool allowDoubleJump = true;
     private bool canDoubleJump = true;
     [SerializeField] private float maxFallSpeed = 40f;
+    [SerializeField] private float wallDragFallSpeed = 10f;
     private float currentMaxFallSpeed;
     private Collider2D _collider;
 
@@ -194,8 +195,18 @@ public class PlayerController : MonoBehaviour
         {
             rb.linearVelocityX = round(rb.linearVelocity.x + acceleration * xAxis * Time.deltaTime);
         }
-        rb.linearVelocityY = round(Mathf.Clamp(rb.linearVelocity.y, -maxFallSpeed, maxFallSpeed));
+        fall();
+    }
+
+    void fall()
+    {   
+        //wall drag
+        if(isTouchingLeftWall() && xAxis < 0 || isTouchingRightWall() && xAxis > 0)
+        {
+            rb.linearVelocityY = round(Mathf.Clamp(rb.linearVelocity.y, -wallDragFallSpeed, maxFallSpeed));
+        }
         
+        rb.linearVelocityY = round(Mathf.Clamp(rb.linearVelocity.y, -maxFallSpeed, maxFallSpeed));
     }
 
     void decelerate()
