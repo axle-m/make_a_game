@@ -24,6 +24,12 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private float boost = 20f;
     [SerializeField] private bool _active = true;
+
+    [SerializeField] private Transform leftWallCheck;
+    [SerializeField] private Transform rightWallCheck;
+    [SerializeField] private float wallCheckX = 0.2f;
+    [SerializeField] private float wallCheckY = 0.35f;
+    [SerializeField] private LayerMask wallLayer;
     
 
     private PlayerStateList playerStateList;
@@ -195,9 +201,9 @@ public class PlayerController : MonoBehaviour
     void decelerate()
     {
         if (rb.linearVelocity.x > 0)
-            rb.linearVelocity = new Vector2(round(rb.linearVelocity.x - (currentFriction + Mathf.Pow(currentFriction, (rb.linearVelocity.x - 15) / 55f)) * Time.deltaTime), rb.linearVelocity.y);
+            rb.linearVelocity = new Vector2(round(rb.linearVelocity.x - currentFriction * Time.deltaTime), rb.linearVelocity.y);
         else if (rb.linearVelocity.x < 0)
-            rb.linearVelocity = new Vector2(round(rb.linearVelocity.x + (currentFriction + Mathf.Pow(currentFriction, (-rb.linearVelocity.x - 15) / 55f)) * Time.deltaTime), rb.linearVelocity.y);
+            rb.linearVelocity = new Vector2(round(rb.linearVelocity.x + currentFriction * Time.deltaTime), rb.linearVelocity.y);
     }
 
     public bool IsGrounded()
@@ -205,6 +211,24 @@ public class PlayerController : MonoBehaviour
         return Physics2D.Raycast(groundCheck.position, Vector2.down, groundCheckY, groundLayer)
             || Physics2D.Raycast(groundCheck.position + new Vector3(-groundCheckX, 0, 0), Vector2.down, groundCheckY, groundLayer)
             || Physics2D.Raycast(groundCheck.position + new Vector3(groundCheckX, 0, 0), Vector2.down, groundCheckY, groundLayer);
+    }
+   
+   //Separate wall checks for left and right to allow for dragging along walls
+    public bool isTouchingLeftWall()
+    {
+        return Physics2D.Raycast(leftWallCheck.position, Vector2.left, wallCheckX, wallLayer)
+            || Physics2D.Raycast(leftWallCheck.position + new Vector3(0, wallCheckY, 0), Vector2.left, wallCheckX, wallLayer)
+            || Physics2D.Raycast(leftWallCheck.position + new Vector3(0, -wallCheckY, 0), Vector2.left, wallCheckX, wallLayer);
+    }
+    public bool isTouchingRightWall()
+    {
+        return Physics2D.Raycast(rightWallCheck.position, Vector2.right, wallCheckX, wallLayer)
+            || Physics2D.Raycast(rightWallCheck.position + new Vector3(0, wallCheckY, 0), Vector2.right, wallCheckX, wallLayer)
+            || Physics2D.Raycast(rightWallCheck.position + new Vector3(0, -wallCheckY, 0), Vector2.right, wallCheckX, wallLayer);
+    }
+    public bool isTouchingWall()
+    {
+        return isTouchingLeftWall() || isTouchingRightWall();
     }
 
 
@@ -223,12 +247,23 @@ public class PlayerController : MonoBehaviour
             playerStateList.Jumping = false;
             applyJumpForces();
         }
+        else if (isTouchingWall() && !IsGrounded() && playerStateList.Jumping)
+        {
+            wallJump();
+        }
         else if (playerStateList.Jumping && allowDoubleJump && canDoubleJump)
         {
             playerStateList.Jumping = false;
             canDoubleJump = false;
             applyJumpForces();
         }
+    }
+
+    void wallJump()
+    {
+        float wallDir = isTouchingLeftWall() ? 1 : -1;
+        rb.linearVelocity = new Vector2(0, 0);
+        rb.linearVelocity = new Vector2(wallDir * boost, jumpForce);
     }
 
     void applyJumpForces()

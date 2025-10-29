@@ -3046,7 +3046,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7850747772821028145, guid: e2742c2ecc06d604082bf1a4c8fdc871, type: 3}
       propertyPath: _active
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7850747772821028145, guid: e2742c2ecc06d604082bf1a4c8fdc871, type: 3}
       propertyPath: friction
