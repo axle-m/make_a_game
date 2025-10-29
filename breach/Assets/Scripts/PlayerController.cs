@@ -272,9 +272,10 @@ public class PlayerController : MonoBehaviour
 
     void wallJump()
     {
+        playerStateList.Jumping = false;
         float wallDir = isTouchingLeftWall() ? 1 : -1;
         rb.linearVelocity = new Vector2(0, 0);
-        rb.linearVelocity = new Vector2(wallDir * boost, jumpForce);
+        rb.linearVelocity = new Vector2(wallDir * 1.5f * boost, jumpForce);
     }
 
     void applyJumpForces()
