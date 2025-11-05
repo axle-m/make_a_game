@@ -3,19 +3,19 @@ using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using System.Collections;
 using UnityEngine.Timeline;
 public class PlayerController : MonoBehaviour
 {
     [Header("Horizontal Movement")]
     private Rigidbody2D rb;
-    private Vector2 _respawnPoint;
+    [SerializeField] private Vector2 _respawnPoint;
     [SerializeField] private float maxSpeed = 15f;
     private float currentMaxSpeed;
     [SerializeField] private float acceleration = 60f;
     [SerializeField] private float friction = 60f;
     private float currentFriction;
     [SerializeField] private float jumpForce = 25f;
+    [SerializeField] private float Gravity = 7;
     private float xAxis;
     private float yAxis;
     [SerializeField] private Transform groundCheck;
@@ -133,6 +133,7 @@ public class PlayerController : MonoBehaviour
 
         resetGroundedStates();
         resetSprintState();
+        resetStatesOnWall();
 
         //ensure dash maintains speed while dashing
         if (playerStateList.Dashing)
@@ -144,6 +145,16 @@ public class PlayerController : MonoBehaviour
         else if (!playerStateList.Sprinting)
         {
             currentMaxSpeed = maxSpeed;
+        }
+    }
+
+    void resetStatesOnWall()
+    {
+        //reset dash and double jump on wall contact
+        if (isTouchingWall())
+        {
+            resetDashes();
+            resetDoubleJump();
         }
     }
 
@@ -274,7 +285,7 @@ public class PlayerController : MonoBehaviour
     {
         float wallDir = isTouchingLeftWall() ? 1 : -1;
         rb.linearVelocity = new Vector2(0, 0);
-        rb.linearVelocity = new Vector2(wallDir * boost, jumpForce);
+        rb.linearVelocity = new Vector2(wallDir * boost * 1.7f, jumpForce);
     }
 
     void applyJumpForces()
@@ -307,7 +318,6 @@ public class PlayerController : MonoBehaviour
         playerStateList.Dashing = true;
         currentMaxSpeed = dashSpeed;
         currentMaxFallSpeed = dashSpeed;
-        float originalGravity = rb.gravityScale;
         rb.gravityScale = 0;
 
         //direction multipliers
@@ -325,10 +335,13 @@ public class PlayerController : MonoBehaviour
         rb.linearVelocity = new Vector2(dashSpeed * xDir, dashSpeed * yDir);
 
         yield return new WaitForSeconds(dashTimeMS / 1000);
-        rb.gravityScale = originalGravity;
-        currentMaxSpeed = maxSpeed;
-        currentMaxFallSpeed = maxFallSpeed;
         playerStateList.Dashing = false;
+        if (!playerStateList.Respawning)
+        {
+            rb.gravityScale = Gravity;
+            currentMaxSpeed = maxSpeed;
+            currentMaxFallSpeed = maxFallSpeed;
+        }
         yield return new WaitForSeconds(dashCooldownMS / 1000);
         canDash = true;
     }
@@ -371,12 +384,14 @@ public class PlayerController : MonoBehaviour
 
     private IEnumerator Respawn()
     {
+        playerStateList.Respawning = true;
         rb.gravityScale = 0;
         yield return PlayDeathAnimation();
-        rb.gravityScale = 7;
+        rb.gravityScale = Gravity;
         _collider.enabled = true;
         transform.position = _respawnPoint;
         _active = true;
+        playerStateList.Respawning = false;
     }
     private void Freeze()
     {
