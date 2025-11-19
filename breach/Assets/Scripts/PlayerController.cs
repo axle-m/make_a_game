@@ -166,6 +166,9 @@ public class PlayerController : MonoBehaviour
         {
             currentMaxSpeed = maxSpeed;
         }
+
+        //not pogoing if attack key is not down
+        if (!attackAction.IsPressed()) playerStateList.Pogoing = false;
     }
 
     void resetStatesOnWall()
@@ -281,7 +284,7 @@ public class PlayerController : MonoBehaviour
     {
         if (playerStateList.Dashing) return;
 
-        if (!jumpAction.IsPressed() && rb.linearVelocity.y > 0)
+        if (!jumpAction.IsPressed() && rb.linearVelocity.y > 0 && !playerStateList.Pogoing)
         {
             playerStateList.Jumping = false;
             rb.linearVelocity = new Vector3(rb.linearVelocity.x, rb.linearVelocity.y * 0.67f, 0);
@@ -409,7 +412,7 @@ public class PlayerController : MonoBehaviour
         {
             Hit(upAttackTransform, upAttackArea, attackableLayer);
         }
-        else if (yAxis < 0)
+        else if (yAxis < 0 && !IsGrounded())
         {
             Hit(downAttackTransform, downAttackArea, attackableLayer);
         }
@@ -419,12 +422,27 @@ public class PlayerController : MonoBehaviour
         }
         yield return new WaitForSeconds(attackCooldownMS / 1000);
         playerStateList.Attacking = false;
+        playerStateList.Pogoing = false;
     }
 
     void Hit(Transform _attackTransform = null, Vector2 _attackArea = default, LayerMask _attackableLayer = default)
     {
-        Debug.DrawRay(_attackTransform.position, _attackArea, Color.red, 0.5f);
         Collider2D[] hitEnemies = Physics2D.OverlapBoxAll(_attackTransform.position, _attackArea, 0f, _attackableLayer);
+        if (hitEnemies.Length != 0 && _attackTransform == downAttackTransform)
+        {
+            Pogo();
+        }
+        foreach (Collider2D hit in hitEnemies)
+        {
+            //attack logic here
+            Debug.Log("Hit " + hit.name);
+        }
+    }
+
+    void Pogo()
+    {
+        playerStateList.Pogoing = true;
+        applyJumpForces();
     }
 
     public void Die()

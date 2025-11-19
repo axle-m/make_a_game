@@ -7,4 +7,5 @@ public class PlayerStateList : MonoBehaviour
     public bool Sprinting = false;
     public bool Respawning = false;
     public bool Attacking = false;
+    public bool Pogoing = false;
 }
