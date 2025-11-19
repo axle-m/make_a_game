@@ -70,6 +70,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Transform sideAttackTransform, upAttackTransform, downAttackTransform;
     [SerializeField] private Vector2 sideAttackArea, upAttackArea, downAttackArea;
     [SerializeField] private float attackRange = 1.0f;
+    [SerializeField] private float attackDamage = 5.0f;
     [SerializeField] private LayerMask attackableLayer;
     [SerializeField] private float attackCooldownMS = 300f;
 
@@ -280,6 +281,7 @@ public class PlayerController : MonoBehaviour
     }
 
 
+
     void Jump()
     {
         if (playerStateList.Dashing) return;
@@ -318,13 +320,16 @@ public class PlayerController : MonoBehaviour
     void applyJumpForces()
     {
         float boostToAdd = 0;
-        if  (xAxis != 0)
+        if (xAxis != 0)
         {
             boostToAdd = Math.Sign(xAxis) * boost;
         }
 
         rb.linearVelocity = new Vector3(rb.linearVelocity.x + boostToAdd, jumpForce, 0);
     }
+
+
+
 
     public void StartDash()
     {
@@ -373,6 +378,8 @@ public class PlayerController : MonoBehaviour
         canDash = true;
     }
 
+
+
     void StartSprint()
     {
         if (canSprint && sprintAction.triggered && sprints > 0 && !playerStateList.Dashing)
@@ -396,6 +403,9 @@ public class PlayerController : MonoBehaviour
         if (!IsGrounded()) playerStateList.Sprinting = false;
         canSprint = true;
     }
+
+
+
 
     void StartAttack()
     {
@@ -427,17 +437,21 @@ public class PlayerController : MonoBehaviour
 
     void Hit(Transform _attackTransform = null, Vector2 _attackArea = default, LayerMask _attackableLayer = default)
     {
-        Collider2D[] hitEnemies = Physics2D.OverlapBoxAll(_attackTransform.position, _attackArea, 0f, _attackableLayer);
-        if (hitEnemies.Length != 0 && _attackTransform == downAttackTransform)
+        Collider2D[] hitObjects = Physics2D.OverlapBoxAll(_attackTransform.position, _attackArea, 0f, _attackableLayer);
+        if (hitObjects.Length != 0 && _attackTransform == downAttackTransform)
         {
             Pogo();
             resetDashes();
             resetDoubleJump();
         }
-        foreach (Collider2D hit in hitEnemies)
+        foreach (Collider2D hit in hitObjects)
         {
             //attack logic here
             Debug.Log("Hit " + hit.name);
+            if(hit.GetComponent<Enemy>() != null)
+            {
+                hit.GetComponent<Enemy>().EnemyHit(attackDamage);
+            }
         }
     }
 
@@ -447,12 +461,15 @@ public class PlayerController : MonoBehaviour
         applyJumpForces();
     }
 
+
+
+
     public void Die()
     {
         _active = false;
         Freeze();
         StartCoroutine(Respawn());
-        
+
     }
 
     public void SetRespawnPoint(Vector2 position)
