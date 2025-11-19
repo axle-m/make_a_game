@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Timeline;
@@ -39,6 +40,7 @@ public class PlayerController : MonoBehaviour
     private InputAction jumpAction;
     private InputAction dashAction;
     private InputAction sprintAction;
+    private InputAction attackAction;
     [SerializeField] private float dashTimeMS = 200f;
     [SerializeField] private float dashSpeed = 50f;
     [SerializeField] private float dashCooldownMS = 200f;
@@ -60,9 +62,26 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private bool allowDoubleJump = true;
     private bool canDoubleJump = true;
     [SerializeField] private float maxFallSpeed = 40f;
-    [SerializeField] private float wallDragFallSpeed = 10f;
-    private float currentMaxFallSpeed;
+    [SerializeField] private float wallDragFallSpeed = 10f;     
+    private float currentMaxFallSpeed;          
     private Collider2D _collider;
+
+    //attack
+    [SerializeField] private Transform sideAttackTransform, upAttackTransform, downAttackTransform;
+    [SerializeField] private Vector2 sideAttackArea, upAttackArea, downAttackArea;
+    [SerializeField] private float attackRange = 1.0f;
+    [SerializeField] private float attackDamage = 5.0f;
+    [SerializeField] private LayerMask attackableLayer;
+    [SerializeField] private float attackCooldownMS = 300f;
+
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireCube(sideAttackTransform.position, sideAttackArea);
+        Gizmos.DrawWireCube(upAttackTransform.position, upAttackArea);
+        Gizmos.DrawWireCube(downAttackTransform.position, downAttackArea);
+    }
 
     void Start()
     {
@@ -73,6 +92,7 @@ public class PlayerController : MonoBehaviour
         jumpAction = InputSystem.actions.FindAction("Jump");
         dashAction = InputSystem.actions.FindAction("Dash");
         sprintAction = InputSystem.actions.FindAction("Sprint");
+        attackAction = InputSystem.actions.FindAction("Attack");
         _collider = GetComponent<Collider2D>();
 
         moveAction.Enable();
@@ -97,6 +117,7 @@ public class PlayerController : MonoBehaviour
         StartSprint();
         StartDash();
         Jump();
+        StartAttack();
 
         if (!_active)
         {
@@ -146,6 +167,9 @@ public class PlayerController : MonoBehaviour
         {
             currentMaxSpeed = maxSpeed;
         }
+
+        //not pogoing if attack key is not down
+        if (!attackAction.IsPressed()) playerStateList.Pogoing = false;
     }
 
     void resetStatesOnWall()
@@ -206,18 +230,8 @@ public class PlayerController : MonoBehaviour
         {
             rb.linearVelocityX = round(rb.linearVelocity.x + acceleration * xAxis * Time.deltaTime);
         }
+        transform.localScale = new Vector3(xAxis == 0 ? transform.localScale.x : xAxis, transform.localScale.y, transform.localScale.z);
         fall();
-    }
-
-    void fall()
-    {   
-        //wall drag
-        if(isTouchingLeftWall() && xAxis < 0 || isTouchingRightWall() && xAxis > 0)
-        {
-            rb.linearVelocityY = round(Mathf.Clamp(rb.linearVelocity.y, -wallDragFallSpeed, maxFallSpeed));
-        }
-        
-        rb.linearVelocityY = round(Mathf.Clamp(rb.linearVelocity.y, -maxFallSpeed, maxFallSpeed));
     }
 
     void decelerate()
@@ -226,6 +240,17 @@ public class PlayerController : MonoBehaviour
             rb.linearVelocity = new Vector2(Mathf.Max(0, round(rb.linearVelocity.x - currentFriction * Time.deltaTime)), rb.linearVelocity.y);
         else if (rb.linearVelocity.x < 0)
             rb.linearVelocity = new Vector2(Mathf.Min(0, round(rb.linearVelocity.x + currentFriction * Time.deltaTime)), rb.linearVelocity.y);
+    }
+    
+    void fall()
+    {   
+        //wall drag
+        if(isTouchingRearWall() && xAxis * Mathf.Sign(transform.localScale.x) < 0 || isTouchingFrontWall() && xAxis * Mathf.Sign(transform.localScale.x) > 0)
+        {
+            rb.linearVelocityY = round(Mathf.Clamp(rb.linearVelocity.y, -wallDragFallSpeed, maxFallSpeed));
+        }
+        
+        rb.linearVelocityY = round(Mathf.Clamp(rb.linearVelocity.y, -maxFallSpeed, maxFallSpeed));
     }
 
     public bool IsGrounded()
@@ -236,29 +261,32 @@ public class PlayerController : MonoBehaviour
     }
    
    //Separate wall checks for left and right to allow for dragging along walls
-    public bool isTouchingLeftWall()
+    public bool isTouchingRearWall()
     {
-        return Physics2D.Raycast(leftWallCheck.position, Vector2.left, wallCheckX, wallLayer)
-            || Physics2D.Raycast(leftWallCheck.position + new Vector3(0, wallCheckY, 0), Vector2.left, wallCheckX, wallLayer)
-            || Physics2D.Raycast(leftWallCheck.position + new Vector3(0, -wallCheckY, 0), Vector2.left, wallCheckX, wallLayer);
+        Vector2 dir = new Vector2(-1 * Mathf.Sign(transform.localScale.x), 0);
+        return Physics2D.Raycast(leftWallCheck.position, dir, wallCheckX, wallLayer)
+            || Physics2D.Raycast(leftWallCheck.position + new Vector3(0, wallCheckY, 0), dir, wallCheckX, wallLayer)
+            || Physics2D.Raycast(leftWallCheck.position + new Vector3(0, -wallCheckY, 0), dir, wallCheckX, wallLayer);
     }
-    public bool isTouchingRightWall()
+    public bool isTouchingFrontWall()
     {
-        return Physics2D.Raycast(rightWallCheck.position, Vector2.right, wallCheckX, wallLayer)
-            || Physics2D.Raycast(rightWallCheck.position + new Vector3(0, wallCheckY, 0), Vector2.right, wallCheckX, wallLayer)
-            || Physics2D.Raycast(rightWallCheck.position + new Vector3(0, -wallCheckY, 0), Vector2.right, wallCheckX, wallLayer);
+        Vector2 dir = new Vector2(1 * Mathf.Sign(transform.localScale.x), 0);
+        return Physics2D.Raycast(rightWallCheck.position, dir, wallCheckX, wallLayer)
+            || Physics2D.Raycast(rightWallCheck.position + new Vector3(0, wallCheckY, 0), dir, wallCheckX, wallLayer)
+            || Physics2D.Raycast(rightWallCheck.position + new Vector3(0, -wallCheckY, 0), dir, wallCheckX, wallLayer);
     }
     public bool isTouchingWall()
     {
-        return isTouchingLeftWall() || isTouchingRightWall();
+        return isTouchingRearWall() || isTouchingFrontWall();
     }
+
 
 
     void Jump()
     {
         if (playerStateList.Dashing) return;
 
-        if (!jumpAction.IsPressed() && rb.linearVelocity.y > 0)
+        if (!jumpAction.IsPressed() && rb.linearVelocity.y > 0 && !playerStateList.Pogoing)
         {
             playerStateList.Jumping = false;
             rb.linearVelocity = new Vector3(rb.linearVelocity.x, rb.linearVelocity.y * 0.67f, 0);
@@ -283,7 +311,8 @@ public class PlayerController : MonoBehaviour
 
     void wallJump()
     {
-        float wallDir = isTouchingLeftWall() ? 1 : -1;
+        float wallDir = isTouchingRearWall() ? 1 : -1;
+        wallDir *= Mathf.Sign(transform.localScale.x); // ensure wallDir is relative to player facing direction
         rb.linearVelocity = new Vector2(0, 0);
         rb.linearVelocity = new Vector2(wallDir * boost * 1.7f, jumpForce);
     }
@@ -291,13 +320,16 @@ public class PlayerController : MonoBehaviour
     void applyJumpForces()
     {
         float boostToAdd = 0;
-        if  (xAxis != 0)
+        if (xAxis != 0)
         {
             boostToAdd = Math.Sign(xAxis) * boost;
         }
 
         rb.linearVelocity = new Vector3(rb.linearVelocity.x + boostToAdd, jumpForce, 0);
     }
+
+
+
 
     public void StartDash()
     {
@@ -346,6 +378,8 @@ public class PlayerController : MonoBehaviour
         canDash = true;
     }
 
+
+
     void StartSprint()
     {
         if (canSprint && sprintAction.triggered && sprints > 0 && !playerStateList.Dashing)
@@ -366,15 +400,76 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(sprintTimeMS / 1000);
         rb.gravityScale = originalGravity;
         yield return new WaitForSeconds(sprintCooldownMS / 1000);
-        if(!IsGrounded()) playerStateList.Sprinting = false;
+        if (!IsGrounded()) playerStateList.Sprinting = false;
         canSprint = true;
     }
+
+
+
+
+    void StartAttack()
+    {
+        if (!playerStateList.Attacking && attackAction.triggered)
+        {
+            StartCoroutine(Attack());
+        }
+    }
+
+    public IEnumerator Attack()
+    {
+        playerStateList.Attacking = true;
+        if (yAxis > 0)
+        {
+            Hit(upAttackTransform, upAttackArea, attackableLayer);
+        }
+        else if (yAxis < 0 && !IsGrounded())
+        {
+            Hit(downAttackTransform, downAttackArea, attackableLayer);
+        }
+        else
+        {
+            Hit(sideAttackTransform, sideAttackArea, attackableLayer);
+        }
+        yield return new WaitForSeconds(attackCooldownMS / 1000);
+        playerStateList.Attacking = false;
+        playerStateList.Pogoing = false;
+    }
+
+    void Hit(Transform _attackTransform = null, Vector2 _attackArea = default, LayerMask _attackableLayer = default)
+    {
+        Collider2D[] hitObjects = Physics2D.OverlapBoxAll(_attackTransform.position, _attackArea, 0f, _attackableLayer);
+        if (hitObjects.Length != 0 && _attackTransform == downAttackTransform)
+        {
+            Pogo();
+            resetDashes();
+            resetDoubleJump();
+        }
+        foreach (Collider2D hit in hitObjects)
+        {
+            //attack logic here
+            Debug.Log("Hit " + hit.name);
+            if(hit.GetComponent<Enemy>() != null)
+            {
+                hit.GetComponent<Enemy>().EnemyHit(attackDamage);
+            }
+        }
+    }
+
+    void Pogo()
+    {
+        playerStateList.Pogoing = true;
+        applyJumpForces();
+    }
+
+
+
+
     public void Die()
     {
         _active = false;
         Freeze();
         StartCoroutine(Respawn());
-        
+
     }
 
     public void SetRespawnPoint(Vector2 position)
