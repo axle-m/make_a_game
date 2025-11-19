@@ -431,6 +431,8 @@ public class PlayerController : MonoBehaviour
         if (hitEnemies.Length != 0 && _attackTransform == downAttackTransform)
         {
             Pogo();
+            resetDashes();
+            resetDoubleJump();
         }
         foreach (Collider2D hit in hitEnemies)
         {
