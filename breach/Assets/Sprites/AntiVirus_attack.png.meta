@@ -1,10 +1,16 @@
 fileFormatVersion: 2
-guid: 8cd6edd917ee7fa469914663c83e2da5
+guid: 8241d9631a0aa834da71a5e98919367c
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -4011562595641134091
-    second: sprite_15_0
+      213: 1810081129013074355
+    second: AntiVirus_attack_0
+  - first:
+      213: -1468079045926627764
+    second: AntiVirus_attack_1
+  - first:
+      213: 1497839748206774551
+    second: AntiVirus_attack_2
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,12 +119,12 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: sprite_15_0
+      name: AntiVirus_attack_0
       rect:
         serializedVersion: 2
-        x: 28
-        y: 2
-        width: 79
+        x: 2
+        y: 131
+        width: 88
         height: 121
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -128,8 +134,52 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 5f3f09cc2111458c0800000000000000
-      internalID: -4011562595641134091
+      spriteID: 3b956755233be1910800000000000000
+      internalID: 1810081129013074355
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AntiVirus_attack_1
+      rect:
+        serializedVersion: 2
+        x: 130
+        y: 131
+        width: 98
+        height: 121
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c46595dc2e550abe0800000000000000
+      internalID: -1468079045926627764
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AntiVirus_attack_2
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 3
+        width: 117
+        height: 121
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 719435aa05569c410800000000000000
+      internalID: 1497839748206774551
       vertices: []
       indices: 
       edges: []
@@ -148,7 +198,9 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      sprite_15_0: -4011562595641134091
+      AntiVirus_attack_0: 1810081129013074355
+      AntiVirus_attack_1: -1468079045926627764
+      AntiVirus_attack_2: 1497839748206774551
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
