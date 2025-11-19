@@ -1,10 +1,16 @@
 fileFormatVersion: 2
-guid: c6d64504c5f2cc046b42292b5112782f
+guid: 34cd95366d9d2a44e9ed09846fc89fe0
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -7039772475811174324
-    second: sprite_11_0
+      213: 7625919219257939533
+    second: AntiVirus_move_0
+  - first:
+      213: -5666512456238460966
+    second: AntiVirus_move_1
+  - first:
+      213: -5136787639806275176
+    second: AntiVirus_move_2
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,13 +119,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: sprite_11_0
+      name: AntiVirus_move_0
       rect:
         serializedVersion: 2
         x: 28
-        y: 2
+        y: 134
         width: 79
-        height: 121
+        height: 120
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +134,52 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: c48e3b74b34bd4e90800000000000000
-      internalID: -7039772475811174324
+      spriteID: d4691b54025b4d960800000000000000
+      internalID: 7625919219257939533
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AntiVirus_move_1
+      rect:
+        serializedVersion: 2
+        x: 160
+        y: 135
+        width: 75
+        height: 119
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: adf849a81f08c51b0800000000000000
+      internalID: -5666512456238460966
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AntiVirus_move_2
+      rect:
+        serializedVersion: 2
+        x: 28
+        y: 7
+        width: 79
+        height: 119
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 891dab28bd676b8b0800000000000000
+      internalID: -5136787639806275176
       vertices: []
       indices: 
       edges: []
@@ -148,7 +198,9 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      sprite_11_0: -7039772475811174324
+      AntiVirus_move_0: 7625919219257939533
+      AntiVirus_move_1: -5666512456238460966
+      AntiVirus_move_2: -5136787639806275176
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

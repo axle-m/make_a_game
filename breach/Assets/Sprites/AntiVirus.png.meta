@@ -1,0 +1,652 @@
+fileFormatVersion: 2
+guid: ea13c0eae8d825b4880ce867ff1493a3
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -4483163079261841770
+    second: AntiVirus_0
+  - first:
+      213: -4735169262380950740
+    second: AntiVirus_1
+  - first:
+      213: 4165843650905944050
+    second: AntiVirus_2
+  - first:
+      213: -7626337323146023384
+    second: AntiVirus_3
+  - first:
+      213: -7570578579632166323
+    second: AntiVirus_4
+  - first:
+      213: 8166509475803792029
+    second: AntiVirus_5
+  - first:
+      213: -3321210771629620432
+    second: AntiVirus_6
+  - first:
+      213: -203084970006840652
+    second: AntiVirus_7
+  - first:
+      213: -4812655558039344883
+    second: AntiVirus_8
+  - first:
+      213: 103686478380458462
+    second: AntiVirus_9
+  - first:
+      213: 7629391580251960214
+    second: AntiVirus_10
+  - first:
+      213: 8414312658932564323
+    second: AntiVirus_11
+  - first:
+      213: -1453190021689295446
+    second: AntiVirus_12
+  - first:
+      213: -3191720935447857414
+    second: AntiVirus_13
+  - first:
+      213: -704598626132650836
+    second: AntiVirus_14
+  - first:
+      213: 4209493077638084814
+    second: AntiVirus_15
+  - first:
+      213: 7007340284176230336
+    second: AntiVirus_16
+  - first:
+      213: 3574369637823679190
+    second: AntiVirus_17
+  - first:
+      213: 2230423409462809158
+    second: AntiVirus_18
+  - first:
+      213: 5512419161471068137
+    second: AntiVirus_19
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: AntiVirus_0
+      rect:
+        serializedVersion: 2
+        x: 28
+        y: 512
+        width: 78
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6969376aeea98c1c0800000000000000
+      internalID: -4483163079261841770
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AntiVirus_1
+      rect:
+        serializedVersion: 2
+        x: 156
+        y: 512
+        width: 78
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c2b5f64d4ac494eb0800000000000000
+      internalID: -4735169262380950740
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AntiVirus_2
+      rect:
+        serializedVersion: 2
+        x: 284
+        y: 512
+        width: 78
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2ffa01a9abc00d930800000000000000
+      internalID: 4165843650905944050
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AntiVirus_3
+      rect:
+        serializedVersion: 2
+        x: 412
+        y: 512
+        width: 78
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 82ee3945c9ec92690800000000000000
+      internalID: -7626337323146023384
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AntiVirus_4
+      rect:
+        serializedVersion: 2
+        x: 28
+        y: 384
+        width: 78
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d4ae7d874e6efe690800000000000000
+      internalID: -7570578579632166323
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AntiVirus_5
+      rect:
+        serializedVersion: 2
+        x: 156
+        y: 384
+        width: 78
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d928528a915455170800000000000000
+      internalID: 8166509475803792029
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AntiVirus_6
+      rect:
+        serializedVersion: 2
+        x: 284
+        y: 384
+        width: 78
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 033c0d45660b8e1d0800000000000000
+      internalID: -3321210771629620432
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AntiVirus_7
+      rect:
+        serializedVersion: 2
+        x: 412
+        y: 384
+        width: 78
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4ba7587bb4f7e2df0800000000000000
+      internalID: -203084970006840652
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AntiVirus_8
+      rect:
+        serializedVersion: 2
+        x: 28
+        y: 256
+        width: 78
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d0961ccb443063db0800000000000000
+      internalID: -4812655558039344883
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AntiVirus_9
+      rect:
+        serializedVersion: 2
+        x: 156
+        y: 256
+        width: 78
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ed1e0ef7d4e507100800000000000000
+      internalID: 103686478380458462
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AntiVirus_10
+      rect:
+        serializedVersion: 2
+        x: 284
+        y: 256
+        width: 78
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6933641583b01e960800000000000000
+      internalID: 7629391580251960214
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AntiVirus_11
+      rect:
+        serializedVersion: 2
+        x: 412
+        y: 256
+        width: 78
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3618fb848c4a5c470800000000000000
+      internalID: 8414312658932564323
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AntiVirus_12
+      rect:
+        serializedVersion: 2
+        x: 28
+        y: 128
+        width: 78
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: aad3116ef5b35dbe0800000000000000
+      internalID: -1453190021689295446
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AntiVirus_13
+      rect:
+        serializedVersion: 2
+        x: 156
+        y: 128
+        width: 78
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: af6f37c38bab4b3d0800000000000000
+      internalID: -3191720935447857414
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AntiVirus_14
+      rect:
+        serializedVersion: 2
+        x: 284
+        y: 128
+        width: 78
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ca4922c5843c836f0800000000000000
+      internalID: -704598626132650836
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AntiVirus_15
+      rect:
+        serializedVersion: 2
+        x: 412
+        y: 128
+        width: 78
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ec87519b6af1b6a30800000000000000
+      internalID: 4209493077638084814
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AntiVirus_16
+      rect:
+        serializedVersion: 2
+        x: 28
+        y: 0
+        width: 78
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0c7eb9aacd21f3160800000000000000
+      internalID: 7007340284176230336
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AntiVirus_17
+      rect:
+        serializedVersion: 2
+        x: 156
+        y: 0
+        width: 78
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6da0c6e6f36ba9130800000000000000
+      internalID: 3574369637823679190
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AntiVirus_18
+      rect:
+        serializedVersion: 2
+        x: 284
+        y: 0
+        width: 78
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6421fbb064e04fe10800000000000000
+      internalID: 2230423409462809158
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: AntiVirus_19
+      rect:
+        serializedVersion: 2
+        x: 412
+        y: 0
+        width: 78
+        height: 128
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9e72a84750c008c40800000000000000
+      internalID: 5512419161471068137
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 1fdcb22669ac6f749a0767a3bae24a8f
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":78.0,"y":128.0},"gridSpriteOffset":{"x":28.0,"y":0.0},"gridSpritePadding":{"x":50.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":1,"keepEmptyRects":false,"isAlternate":false}'
+    nameFileIdTable:
+      AntiVirus_0: -4483163079261841770
+      AntiVirus_1: -4735169262380950740
+      AntiVirus_10: 7629391580251960214
+      AntiVirus_11: 8414312658932564323
+      AntiVirus_12: -1453190021689295446
+      AntiVirus_13: -3191720935447857414
+      AntiVirus_14: -704598626132650836
+      AntiVirus_15: 4209493077638084814
+      AntiVirus_16: 7007340284176230336
+      AntiVirus_17: 3574369637823679190
+      AntiVirus_18: 2230423409462809158
+      AntiVirus_19: 5512419161471068137
+      AntiVirus_2: 4165843650905944050
+      AntiVirus_3: -7626337323146023384
+      AntiVirus_4: -7570578579632166323
+      AntiVirus_5: 8166509475803792029
+      AntiVirus_6: -3321210771629620432
+      AntiVirus_7: -203084970006840652
+      AntiVirus_8: -4812655558039344883
+      AntiVirus_9: 103686478380458462
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
