@@ -7,7 +7,6 @@ using UnityEngine.InputSystem;
 using UnityEngine.Timeline;
 public class PlayerController : MonoBehaviour
 {
-    [Header("Horizontal Movement")]
     private Rigidbody2D rb;
     [SerializeField] private Vector2 _respawnPoint;
     [SerializeField] private float maxSpeed = 15f;
@@ -73,6 +72,11 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float attackDamage = 5.0f;
     [SerializeField] private LayerMask attackableLayer;
     [SerializeField] private float attackCooldownMS = 300f;
+    [SerializeField] private float recoil = 40f;
+    [SerializeField] private float iTimeMS = 1000f;
+    [SerializeField] private Vector2 GlobalRespawnPoint = new Vector2(0, 0);
+    [SerializeField] private int maxHealth = 3;
+
 
 
     private void OnDrawGizmos()
@@ -446,11 +450,11 @@ public class PlayerController : MonoBehaviour
         }
         foreach (Collider2D hit in hitObjects)
         {
-            //attack logic here
             Debug.Log("Hit " + hit.name);
             if(hit.GetComponent<Enemy>() != null)
             {
-                hit.GetComponent<Enemy>().EnemyHit(attackDamage);
+                hit.GetComponent<Enemy>().EnemyHit(attackDamage, new Vector2(rb.position.x - hit.transform.position.x, 0).normalized, 10f);
+                rb.linearVelocityX += recoil * Mathf.Sign(rb.position.x - hit.transform.position.x);
             }
         }
     }
@@ -462,7 +466,45 @@ public class PlayerController : MonoBehaviour
     }
 
 
+    void OnCollisionStay2D(Collision2D collision)
+    {
+        Debug.Log("Collided with " + collision.gameObject.name);
+        var enemy = collision.gameObject.GetComponent<Enemy>();
+        if (enemy != null)
+        {
+            PlayerHit(enemy.ContactDamage, enemy.transform.position);
+        }
+    }
 
+    public void PlayerHit(int _damage, Vector3 other)
+    {
+        if (!playerStateList.Invincible)
+        {
+            playerStateList.Health -= _damage;
+            if (playerStateList.Health <= 0)
+            {
+                FullyDie();
+                return;
+            }
+            StartCoroutine(PlayerHitCoroutine(_damage, other));
+        }
+    }
+
+    private IEnumerator PlayerHitCoroutine(int _damage, Vector3 other)
+    {
+        playerStateList.Invincible = true;
+        Vector2 hitDirection = new Vector2(rb.position.x - other.x, 0).normalized + Vector2.up ;
+        rb.AddForce(30f * hitDirection, ForceMode2D.Impulse);
+        yield return new WaitForSeconds(iTimeMS / 1000);
+        playerStateList.Invincible = false;
+    }
+
+    private void FullyDie()
+    {
+        SetRespawnPoint(GlobalRespawnPoint);
+        playerStateList.Health = maxHealth;
+        Die();
+    }
 
     public void Die()
     {
