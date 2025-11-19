@@ -6,4 +6,5 @@ public class PlayerStateList : MonoBehaviour
     public bool Dashing = false;
     public bool Sprinting = false;
     public bool Respawning = false;
+    public bool Attacking = false;
 }

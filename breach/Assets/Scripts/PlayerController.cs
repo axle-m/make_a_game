@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Timeline;
@@ -39,6 +40,7 @@ public class PlayerController : MonoBehaviour
     private InputAction jumpAction;
     private InputAction dashAction;
     private InputAction sprintAction;
+    private InputAction attackAction;
     [SerializeField] private float dashTimeMS = 200f;
     [SerializeField] private float dashSpeed = 50f;
     [SerializeField] private float dashCooldownMS = 200f;
@@ -68,6 +70,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Transform sideAttackTransform, upAttackTransform, downAttackTransform;
     [SerializeField] private Vector2 sideAttackArea, upAttackArea, downAttackArea;
     [SerializeField] private float attackRange = 1.0f;
+    [SerializeField] private LayerMask attackableLayer;
+    [SerializeField] private float attackCooldownMS = 300f;
+
 
     private void OnDrawGizmos()
     {
@@ -86,6 +91,7 @@ public class PlayerController : MonoBehaviour
         jumpAction = InputSystem.actions.FindAction("Jump");
         dashAction = InputSystem.actions.FindAction("Dash");
         sprintAction = InputSystem.actions.FindAction("Sprint");
+        attackAction = InputSystem.actions.FindAction("Attack");
         _collider = GetComponent<Collider2D>();
 
         moveAction.Enable();
@@ -110,6 +116,7 @@ public class PlayerController : MonoBehaviour
         StartSprint();
         StartDash();
         Jump();
+        StartAttack();
 
         if (!_active)
         {
@@ -383,9 +390,43 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(sprintTimeMS / 1000);
         rb.gravityScale = originalGravity;
         yield return new WaitForSeconds(sprintCooldownMS / 1000);
-        if(!IsGrounded()) playerStateList.Sprinting = false;
+        if (!IsGrounded()) playerStateList.Sprinting = false;
         canSprint = true;
     }
+
+    void StartAttack()
+    {
+        if (!playerStateList.Attacking && attackAction.triggered)
+        {
+            StartCoroutine(Attack());
+        }
+    }
+
+    public IEnumerator Attack()
+    {
+        playerStateList.Attacking = true;
+        if (yAxis > 0)
+        {
+            Hit(upAttackTransform, upAttackArea, attackableLayer);
+        }
+        else if (yAxis < 0)
+        {
+            Hit(downAttackTransform, downAttackArea, attackableLayer);
+        }
+        else
+        {
+            Hit(sideAttackTransform, sideAttackArea, attackableLayer);
+        }
+        yield return new WaitForSeconds(attackCooldownMS / 1000);
+        playerStateList.Attacking = false;
+    }
+
+    void Hit(Transform _attackTransform = null, Vector2 _attackArea = default, LayerMask _attackableLayer = default)
+    {
+        Debug.DrawRay(_attackTransform.position, _attackArea, Color.red, 0.5f);
+        Collider2D[] hitEnemies = Physics2D.OverlapBoxAll(_attackTransform.position, _attackArea, 0f, _attackableLayer);
+    }
+
     public void Die()
     {
         _active = false;
