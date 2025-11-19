@@ -60,9 +60,22 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private bool allowDoubleJump = true;
     private bool canDoubleJump = true;
     [SerializeField] private float maxFallSpeed = 40f;
-    [SerializeField] private float wallDragFallSpeed = 10f;
-    private float currentMaxFallSpeed;
+    [SerializeField] private float wallDragFallSpeed = 10f;     
+    private float currentMaxFallSpeed;          
     private Collider2D _collider;
+
+    //attack
+    [SerializeField] private Transform sideAttackTransform, upAttackTransform, downAttackTransform;
+    [SerializeField] private Vector2 sideAttackArea, upAttackArea, downAttackArea;
+    [SerializeField] private float attackRange = 1.0f;
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireCube(sideAttackTransform.position, sideAttackArea);
+        Gizmos.DrawWireCube(upAttackTransform.position, upAttackArea);
+        Gizmos.DrawWireCube(downAttackTransform.position, downAttackArea);
+    }
 
     void Start()
     {
@@ -206,18 +219,8 @@ public class PlayerController : MonoBehaviour
         {
             rb.linearVelocityX = round(rb.linearVelocity.x + acceleration * xAxis * Time.deltaTime);
         }
+        transform.localScale = new Vector3(xAxis == 0 ? transform.localScale.x : xAxis, transform.localScale.y, transform.localScale.z);
         fall();
-    }
-
-    void fall()
-    {   
-        //wall drag
-        if(isTouchingLeftWall() && xAxis < 0 || isTouchingRightWall() && xAxis > 0)
-        {
-            rb.linearVelocityY = round(Mathf.Clamp(rb.linearVelocity.y, -wallDragFallSpeed, maxFallSpeed));
-        }
-        
-        rb.linearVelocityY = round(Mathf.Clamp(rb.linearVelocity.y, -maxFallSpeed, maxFallSpeed));
     }
 
     void decelerate()
@@ -226,6 +229,17 @@ public class PlayerController : MonoBehaviour
             rb.linearVelocity = new Vector2(Mathf.Max(0, round(rb.linearVelocity.x - currentFriction * Time.deltaTime)), rb.linearVelocity.y);
         else if (rb.linearVelocity.x < 0)
             rb.linearVelocity = new Vector2(Mathf.Min(0, round(rb.linearVelocity.x + currentFriction * Time.deltaTime)), rb.linearVelocity.y);
+    }
+    
+    void fall()
+    {   
+        //wall drag
+        if(isTouchingRearWall() && xAxis * Mathf.Sign(transform.localScale.x) < 0 || isTouchingFrontWall() && xAxis * Mathf.Sign(transform.localScale.x) > 0)
+        {
+            rb.linearVelocityY = round(Mathf.Clamp(rb.linearVelocity.y, -wallDragFallSpeed, maxFallSpeed));
+        }
+        
+        rb.linearVelocityY = round(Mathf.Clamp(rb.linearVelocity.y, -maxFallSpeed, maxFallSpeed));
     }
 
     public bool IsGrounded()
@@ -236,21 +250,23 @@ public class PlayerController : MonoBehaviour
     }
    
    //Separate wall checks for left and right to allow for dragging along walls
-    public bool isTouchingLeftWall()
+    public bool isTouchingRearWall()
     {
-        return Physics2D.Raycast(leftWallCheck.position, Vector2.left, wallCheckX, wallLayer)
-            || Physics2D.Raycast(leftWallCheck.position + new Vector3(0, wallCheckY, 0), Vector2.left, wallCheckX, wallLayer)
-            || Physics2D.Raycast(leftWallCheck.position + new Vector3(0, -wallCheckY, 0), Vector2.left, wallCheckX, wallLayer);
+        Vector2 dir = new Vector2(-1 * Mathf.Sign(transform.localScale.x), 0);
+        return Physics2D.Raycast(leftWallCheck.position, dir, wallCheckX, wallLayer)
+            || Physics2D.Raycast(leftWallCheck.position + new Vector3(0, wallCheckY, 0), dir, wallCheckX, wallLayer)
+            || Physics2D.Raycast(leftWallCheck.position + new Vector3(0, -wallCheckY, 0), dir, wallCheckX, wallLayer);
     }
-    public bool isTouchingRightWall()
+    public bool isTouchingFrontWall()
     {
-        return Physics2D.Raycast(rightWallCheck.position, Vector2.right, wallCheckX, wallLayer)
-            || Physics2D.Raycast(rightWallCheck.position + new Vector3(0, wallCheckY, 0), Vector2.right, wallCheckX, wallLayer)
-            || Physics2D.Raycast(rightWallCheck.position + new Vector3(0, -wallCheckY, 0), Vector2.right, wallCheckX, wallLayer);
+        Vector2 dir = new Vector2(1 * Mathf.Sign(transform.localScale.x), 0);
+        return Physics2D.Raycast(rightWallCheck.position, dir, wallCheckX, wallLayer)
+            || Physics2D.Raycast(rightWallCheck.position + new Vector3(0, wallCheckY, 0), dir, wallCheckX, wallLayer)
+            || Physics2D.Raycast(rightWallCheck.position + new Vector3(0, -wallCheckY, 0), dir, wallCheckX, wallLayer);
     }
     public bool isTouchingWall()
     {
-        return isTouchingLeftWall() || isTouchingRightWall();
+        return isTouchingRearWall() || isTouchingFrontWall();
     }
 
 
@@ -283,7 +299,8 @@ public class PlayerController : MonoBehaviour
 
     void wallJump()
     {
-        float wallDir = isTouchingLeftWall() ? 1 : -1;
+        float wallDir = isTouchingRearWall() ? 1 : -1;
+        wallDir *= Mathf.Sign(transform.localScale.x); // ensure wallDir is relative to player facing direction
         rb.linearVelocity = new Vector2(0, 0);
         rb.linearVelocity = new Vector2(wallDir * boost * 1.7f, jumpForce);
     }
