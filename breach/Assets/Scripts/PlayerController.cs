@@ -7,7 +7,6 @@ using UnityEngine.InputSystem;
 using UnityEngine.Timeline;
 public class PlayerController : MonoBehaviour
 {
-    [Header("Horizontal Movement")]
     private Rigidbody2D rb;
     [SerializeField] private Vector2 _respawnPoint;
     [SerializeField] private float maxSpeed = 15f;
@@ -73,6 +72,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float attackDamage = 5.0f;
     [SerializeField] private LayerMask attackableLayer;
     [SerializeField] private float attackCooldownMS = 300f;
+    [SerializeField] private float recoil = 40f;
 
 
     private void OnDrawGizmos()
@@ -446,11 +446,11 @@ public class PlayerController : MonoBehaviour
         }
         foreach (Collider2D hit in hitObjects)
         {
-            //attack logic here
             Debug.Log("Hit " + hit.name);
             if(hit.GetComponent<Enemy>() != null)
             {
-                hit.GetComponent<Enemy>().EnemyHit(attackDamage);
+                hit.GetComponent<Enemy>().EnemyHit(attackDamage, new Vector2(rb.position.x - hit.transform.position.x, 0).normalized, 10f);
+                rb.linearVelocityX += recoil * Mathf.Sign(rb.position.x - hit.transform.position.x);
             }
         }
     }

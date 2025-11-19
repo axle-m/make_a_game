@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 4380685238079510024}
   - component: {fileID: 7850747772821028145}
   - component: {fileID: -7931018804436312411}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -226,6 +226,7 @@ MonoBehaviour:
   upAttackArea: {x: 3.5, y: 4.5}
   downAttackArea: {x: 3.5, y: 4.5}
   attackRange: 1
+  attackDamage: 5
   attackableLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -247,6 +248,7 @@ MonoBehaviour:
   Sprinting: 0
   Respawning: 0
   Attacking: 0
+  Pogoing: 0
 --- !u!1 &2124666194862775110
 GameObject:
   m_ObjectHideFlags: 0
