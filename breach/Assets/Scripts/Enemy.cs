@@ -1,16 +1,17 @@
+using Unity.VisualScripting;
 using UnityEditor.Callbacks;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
     [SerializeField] protected float Health;
-    [SerializeField] protected int Damage;
+    [SerializeField] protected int Damage = 1;
+    public int ContactDamage => Damage;
     [SerializeField] protected float MoveSpeed;
-    [SerializeField] protected PlayerController player;
+    protected PlayerController player;
     [SerializeField] protected float recoilLength;
     [SerializeField] protected float recoilSpeed;
     [SerializeField] protected bool isRecoiling = false;
-    protected float speedPreKnockback;
 
     protected float recoilTimer = 0f;
     protected Rigidbody2D rb;
@@ -35,7 +36,7 @@ public class Enemy : MonoBehaviour
             {
                 isRecoiling = false;
                 recoilTimer = 0f;
-                rb.linearVelocityX = speedPreKnockback;
+                rb.linearVelocityX = 0f;
             }
         }
     }

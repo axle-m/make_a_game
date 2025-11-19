@@ -30,7 +30,7 @@ public class GroundEnemy : Enemy
         Vector2 dir = new Vector2(player.transform.position.x - transform.position.x, 0).normalized;
         if (!player.GetComponent<PlayerStateList>().Respawning && Physics2D.Raycast(transform.position, dir, 10f, LayerMask.GetMask("Player")))
         {
-            transform.position = Vector2.MoveTowards(transform.position, player.transform.position, MoveSpeed * Time.deltaTime);
+            rb.position += dir * MoveSpeed * Time.deltaTime;
         }
     }
 

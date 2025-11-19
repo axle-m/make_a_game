@@ -152,10 +152,10 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 0.001
   m_LinearDamping: 0
-  m_AngularDamping: 0.05
-  m_GravityScale: 7
+  m_AngularDamping: 0
+  m_GravityScale: 1000000
   m_Material: {fileID: 6200000, guid: 23fe609757e492649b094ff194c102f1, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
@@ -182,9 +182,8 @@ MonoBehaviour:
   Health: 50
   Damage: 1
   MoveSpeed: 5
-  player: {fileID: 0}
   recoilLength: 0.1
-  recoilSpeed: 80
+  recoilSpeed: 50
   isRecoiling: 0
 --- !u!114 &246429672970728484
 MonoBehaviour:
@@ -198,10 +197,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb849b4f43276ce41abeeb68c86d8e1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GroundEnemy
-  Health: 50
+  Health: 100000000
   Damage: 1
   MoveSpeed: 5
-  player: {fileID: 0}
   recoilLength: 0.1
-  recoilSpeed: 80
+  recoilSpeed: 50
   isRecoiling: 0
