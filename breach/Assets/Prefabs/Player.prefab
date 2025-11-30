@@ -213,6 +213,26 @@ MonoBehaviour:
   coyoteFrameTolerance: 8
   allowDoubleJump: 1
   maxFallSpeed: 40
+<<<<<<< Updated upstream
+=======
+  wallDragFallSpeed: 10
+  sideAttackTransform: {fileID: 3171063332039156395}
+  upAttackTransform: {fileID: 1169537228047568895}
+  downAttackTransform: {fileID: 959922282662220632}
+  sideAttackArea: {x: 3.5, y: 2.5}
+  upAttackArea: {x: 3.5, y: 4.5}
+  downAttackArea: {x: 3.5, y: 4.5}
+  attackRange: 1
+  attackDamage: 5
+  attackableLayer:
+    serializedVersion: 2
+    m_Bits: 256
+  attackCooldownMS: 300
+  recoil: 40
+  iTimeMS: 1000
+  GlobalRespawnPoint: {x: 0, y: 0}
+  maxHealth: 3
+>>>>>>> Stashed changes
 --- !u!114 &-7931018804436312411
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -228,6 +248,45 @@ MonoBehaviour:
   Jumping: 0
   Dashing: 0
   Sprinting: 0
+<<<<<<< Updated upstream
+=======
+  Respawning: 0
+  Attacking: 0
+  Pogoing: 0
+  Invincible: 0
+  Health: 3
+--- !u!1 &2124666194862775110
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1169537228047568895}
+  m_Layer: 0
+  m_Name: Up Attack Transform
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1169537228047568895
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2124666194862775110}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 2.5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3134941925427538890}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+>>>>>>> Stashed changes
 --- !u!1 &2187819419465771611
 GameObject:
   m_ObjectHideFlags: 0

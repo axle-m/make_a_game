@@ -173,9 +173,9 @@ TextureImporter:
       name: AntiVirus_0
       rect:
         serializedVersion: 2
-        x: 28
+        x: 29
         y: 512
-        width: 78
+        width: 77
         height: 128
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -195,9 +195,9 @@ TextureImporter:
       name: AntiVirus_1
       rect:
         serializedVersion: 2
-        x: 156
+        x: 157
         y: 512
-        width: 78
+        width: 77
         height: 128
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -217,9 +217,9 @@ TextureImporter:
       name: AntiVirus_2
       rect:
         serializedVersion: 2
-        x: 284
+        x: 285
         y: 512
-        width: 78
+        width: 77
         height: 128
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -239,9 +239,9 @@ TextureImporter:
       name: AntiVirus_3
       rect:
         serializedVersion: 2
-        x: 412
+        x: 413
         y: 512
-        width: 78
+        width: 77
         height: 128
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -261,9 +261,9 @@ TextureImporter:
       name: AntiVirus_4
       rect:
         serializedVersion: 2
-        x: 28
+        x: 29
         y: 384
-        width: 78
+        width: 77
         height: 128
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -283,9 +283,9 @@ TextureImporter:
       name: AntiVirus_5
       rect:
         serializedVersion: 2
-        x: 156
+        x: 157
         y: 384
-        width: 78
+        width: 77
         height: 128
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -305,9 +305,9 @@ TextureImporter:
       name: AntiVirus_6
       rect:
         serializedVersion: 2
-        x: 284
+        x: 285
         y: 384
-        width: 78
+        width: 77
         height: 128
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -327,9 +327,9 @@ TextureImporter:
       name: AntiVirus_7
       rect:
         serializedVersion: 2
-        x: 412
+        x: 413
         y: 384
-        width: 78
+        width: 77
         height: 128
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -349,9 +349,9 @@ TextureImporter:
       name: AntiVirus_8
       rect:
         serializedVersion: 2
-        x: 28
+        x: 29
         y: 256
-        width: 78
+        width: 77
         height: 128
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -371,9 +371,9 @@ TextureImporter:
       name: AntiVirus_9
       rect:
         serializedVersion: 2
-        x: 156
+        x: 157
         y: 256
-        width: 78
+        width: 77
         height: 128
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -393,9 +393,9 @@ TextureImporter:
       name: AntiVirus_10
       rect:
         serializedVersion: 2
-        x: 284
+        x: 285
         y: 256
-        width: 78
+        width: 77
         height: 128
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -415,9 +415,9 @@ TextureImporter:
       name: AntiVirus_11
       rect:
         serializedVersion: 2
-        x: 412
+        x: 413
         y: 256
-        width: 78
+        width: 77
         height: 128
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -437,9 +437,9 @@ TextureImporter:
       name: AntiVirus_12
       rect:
         serializedVersion: 2
-        x: 28
+        x: 29
         y: 128
-        width: 78
+        width: 77
         height: 128
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -459,9 +459,9 @@ TextureImporter:
       name: AntiVirus_13
       rect:
         serializedVersion: 2
-        x: 156
+        x: 157
         y: 128
-        width: 78
+        width: 77
         height: 128
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -481,9 +481,9 @@ TextureImporter:
       name: AntiVirus_14
       rect:
         serializedVersion: 2
-        x: 284
+        x: 285
         y: 128
-        width: 78
+        width: 77
         height: 128
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -503,9 +503,9 @@ TextureImporter:
       name: AntiVirus_15
       rect:
         serializedVersion: 2
-        x: 412
+        x: 413
         y: 128
-        width: 78
+        width: 77
         height: 128
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -525,9 +525,9 @@ TextureImporter:
       name: AntiVirus_16
       rect:
         serializedVersion: 2
-        x: 28
+        x: 29
         y: 0
-        width: 78
+        width: 77
         height: 128
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -547,9 +547,9 @@ TextureImporter:
       name: AntiVirus_17
       rect:
         serializedVersion: 2
-        x: 156
+        x: 157
         y: 0
-        width: 78
+        width: 77
         height: 128
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -569,9 +569,9 @@ TextureImporter:
       name: AntiVirus_18
       rect:
         serializedVersion: 2
-        x: 284
+        x: 285
         y: 0
-        width: 78
+        width: 77
         height: 128
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -591,9 +591,9 @@ TextureImporter:
       name: AntiVirus_19
       rect:
         serializedVersion: 2
-        x: 412
+        x: 413
         y: 0
-        width: 78
+        width: 77
         height: 128
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -623,7 +623,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries:
       - key: SpriteEditor.SliceSettings
-        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":78.0,"y":128.0},"gridSpriteOffset":{"x":28.0,"y":0.0},"gridSpritePadding":{"x":50.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":1,"keepEmptyRects":false,"isAlternate":false}'
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":77.0,"y":128.0},"gridSpriteOffset":{"x":29.0,"y":0.0},"gridSpritePadding":{"x":51.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":1,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
       AntiVirus_0: -4483163079261841770
       AntiVirus_1: -4735169262380950740
