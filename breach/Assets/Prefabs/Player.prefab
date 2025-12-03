@@ -199,13 +199,13 @@ MonoBehaviour:
     m_Bits: 8
   boost: 20
   _active: 1
-  leftWallCheck: {fileID: 0}
-  rightWallCheck: {fileID: 0}
+  leftWallCheck: {fileID: 8848208198201547875}
+  rightWallCheck: {fileID: 4817425771655278520}
   wallCheckX: 0.2
   wallCheckY: 0.35
   wallLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 128
   dashTimeMS: 200
   dashSpeed: 50
   dashCooldownMS: 1000
@@ -231,6 +231,10 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   attackCooldownMS: 300
+  recoil: 40
+  iTimeMS: 1000
+  GlobalRespawnPoint: {x: 0, y: 0}
+  maxHealth: 3
 --- !u!114 &-7931018804436312411
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -249,6 +253,8 @@ MonoBehaviour:
   Respawning: 0
   Attacking: 0
   Pogoing: 0
+  Invincible: 0
+  Health: 1000
 --- !u!1 &2124666194862775110
 GameObject:
   m_ObjectHideFlags: 0

@@ -58,7 +58,7 @@ public class PlayerController : MonoBehaviour
     private int jumpFrameCounter = 0;
     [SerializeField] private int coyoteFrameTolerance = 8;
     private int coyoteFrameCounter = 0;
-    [SerializeField] private bool allowDoubleJump = true;
+    [SerializeField] public bool allowDoubleJump {get; set;} = false;
     private bool canDoubleJump = true;
     [SerializeField] private float maxFallSpeed = 40f;
     [SerializeField] private float wallDragFallSpeed = 10f;     
