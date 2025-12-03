@@ -11,8 +11,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Vector2 _respawnPoint;
     [SerializeField] private float maxSpeed = 15f;
     private float currentMaxSpeed;
-    [SerializeField] private float acceleration = 60f;
-    [SerializeField] private float friction = 60f;
+    [SerializeField] private float acceleration = 200f;
+    [SerializeField] private float friction = 200f;
     private float currentFriction;
     [SerializeField] private float jumpForce = 25f;
     [SerializeField] private float Gravity = 7;
@@ -22,7 +22,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float groundCheckY = 0.3f;
     [SerializeField] private float groundCheckX = 0.5f;
     [SerializeField] private LayerMask groundLayer;
-    [SerializeField] private float boost = 20f;
+    [SerializeField] private float boost = 15f;
     [SerializeField] private bool _active = true;
 
     [SerializeField] private Transform leftWallCheck;
@@ -41,14 +41,14 @@ public class PlayerController : MonoBehaviour
     private InputAction sprintAction;
     private InputAction attackAction;
     [SerializeField] private float dashTimeMS = 200f;
-    [SerializeField] private float dashSpeed = 50f;
+    [SerializeField] private float dashSpeed = 45f;
     [SerializeField] private float dashCooldownMS = 200f;
     private bool canDash = true;
     [SerializeField] private int maxDashes = 1;
     private int dashes;
     [SerializeField] private float sprintJumpFriction;
-    [SerializeField] private float sprintTimeMS = 300f;
-    [SerializeField] private float sprintSpeed = 50f;
+    [SerializeField] private float sprintTimeMS = 150f;
+    [SerializeField] private float sprintSpeed = 30f;
     [SerializeField] private float sprintCooldownMS = 200f;
 
     private bool canSprint = true;
@@ -72,7 +72,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float attackDamage = 5.0f;
     [SerializeField] private LayerMask attackableLayer;
     [SerializeField] private float attackCooldownMS = 300f;
-    [SerializeField] private float recoil = 40f;
+    [SerializeField] private float recoil = 10f;
     [SerializeField] private float iTimeMS = 1000f;
     [SerializeField] private Vector2 GlobalRespawnPoint = new Vector2(0, 0);
     [SerializeField] private int maxHealth = 3;
